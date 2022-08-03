@@ -1,11 +1,8 @@
-import React from "react";
+import React, { useEffect, useReducer, useState } from 'react';
 
-const Home = () => {
-    return (
-        <div>
-            Home page
-        </div>
-    )
-}
+const Home = (props) => {
+  const { user } = props;
+  return <div>{user.name}</div>;
+};
 
 export default Home;
