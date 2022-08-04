@@ -27,11 +27,11 @@ const Login = (props) => {
       setEmail('');
       setPassword('');
       localStorage.setItem('is_logged_in', content.user.id);
-      navigateTo("/")
+      navigateTo('/');
     }
   };
   return (
-    <div className="container w-3/4 xl:w-1/3 shadow-sm border rounded-xl mx-auto space-y-6 py-8 px-6">
+    <div className="container w-full mx-auto space-y-6 p-10">
       <div className="font-semibold text-gray-700 text-xl">
         <p>Login to your account!</p>
         <span className="text-red-500 font-normal text-sm mt-2">
@@ -70,12 +70,20 @@ const Login = (props) => {
           </span>
         )}
       </div>
-      <button
-        onClick={handleSubmit}
-        className="rounded-lg border font-semibold text-sm text-gray-700 hover:bg-gray-50 transition ease-out duration-100 px-8 py-2 mt-4"
-      >
-        Login
-      </button>
+      <div className="flex justify-between">
+        <button
+          onClick={handleSubmit}
+          className="rounded-lg border font-semibold text-sm text-gray-700 hover:bg-gray-100 transition ease-out duration-300 px-8 py-2"
+        >
+          Login
+        </button>
+        <button
+          onClick={() => props.setIsLoginVisable(false)}
+          className="bg-gray-600 hover:bg-gray-700 rounded-lg text-white border text-sm px-8 py-2 transition ease-out duration-300"
+        >
+          Close
+        </button>
+      </div>
     </div>
   );
 };

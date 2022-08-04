@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState, Fragment } from 'react';
+import Login from '../components/Login';
+import { Dialog, Transition } from '@headlessui/react';
 
-const Register = () => {
+const Register = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [password_confirmation, setPasswordConfirmation] = useState('');
   const [error, setError] = useState();
   const [successMessage, setSuccessMessage] = useState();
+  const [isLoginVisable, setIsLoginVisable] = useState(false);
 
   const handleSubmit = async () => {
     let userInfo = { email, password, password_confirmation };
@@ -30,32 +32,73 @@ const Register = () => {
     }
   };
   useEffect(() => {
-    setTimeout(() =>{
-      setSuccessMessage('')
-    }, 5000)
+    setTimeout(() => {
+      setSuccessMessage('');
+    }, 5000);
   }, [successMessage]);
+
   return (
-    <div>
+    <>
+      {isLoginVisable && (
+        <div
+          className="relative z-10"
+          aria-labelledby="modal-title"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+
+          <div className="fixed z-10 inset-0 overflow-y-auto">
+            <div className="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
+              <div className="relative bg-white rounded-xl text-left overflow-hidden shadow-xl sm:my-8 sm:max-w-lg sm:w-full transition ease-in-out duration-700"></div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <Transition.Root show={isLoginVisable} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={setIsLoginVisable}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          </Transition.Child>
+
+          <div className="fixed z-10 inset-0 overflow-y-auto">
+            <div className="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                enterTo="opacity-100 translate-y-0 sm:scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              >
+                <Dialog.Panel className="relative bg-white rounded-xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full">
+                  <Login setUser={props.setUser} setIsLoginVisable={setIsLoginVisable} />
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition.Root>
       <div className="container w-3/4 xl:w-1/3 shadow-sm border rounded-xl mx-auto space-y-6 py-8 px-6">
         <div className="font-semibold text-gray-700 text-xl">
           <p>Create an account!</p>
           <p className="text-sm text-gray-400 font-normal">
             If you have an account click here to
             <span className="ml-1 uppercase font-semibold text-xs hover:text-gray-500 transition ease-in-out duration-150">
-              <Link to="/login">Login</Link>
+              <button onClick={() => setIsLoginVisable(true)}>Login</button>
             </span>
-            .
           </p>
         </div>
-        {/* <div className="row flex flex-col w-full">
-          <label className="font-semibold text-gray-800 mb-2">Username</label>
-          <input
-            type="text"
-            name="name"
-            className="rounded-lg border border-gray-300 text-gray-700 h-10 px-2 py-5"
-            placeholder="Enter your username..."
-          />
-        </div> */}
         <div className="row flex flex-col w-full">
           <label className="font-semibold text-gray-800 mb-2">Email</label>
           <input
@@ -108,7 +151,7 @@ const Register = () => {
         </div>
         <button
           onClick={handleSubmit}
-          className="rounded-lg border font-semibold text-sm text-gray-700 hover:bg-gray-50 transition ease-out duration-100 px-8  py-2 mt-4"
+          className="rounded-lg border font-semibold text-sm text-gray-700 hover:bg-gray-100 transition ease-out duration-300 px-8  py-2 mt-4"
         >
           Register
         </button>
@@ -118,7 +161,7 @@ const Register = () => {
           </p>
         )}
       </div>
-    </div>
+    </>
   );
 };
 export default Register;
