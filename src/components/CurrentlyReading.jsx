@@ -26,7 +26,7 @@ const CurrentlyReading = () => {
               Read 5 pages out of 50
             </div>
             <div className="update-progress text-sm">
-              <button className="border px-1 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 mt-2">
+              <button className="border px-1 py-2 rounded-lg text-gray-600 bg-gray-50 hover:bg-gray-100 hover:text-gray-700 transition ease-in duration-150 mt-2">
                 Update progress
               </button>
             </div>
