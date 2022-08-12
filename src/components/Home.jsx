@@ -1,12 +1,12 @@
 import React from 'react';
 import CurrentlyReading from './CurrentlyReading';
-import FriendProgress from './FriendProgress';
+import RecentlyReviews from './RecentlyReviews';
 
 const Home = () => {
   return (
-    <div className="main-page flex">
+    <div className="main-page flex flex-col lg:flex-row ">
       <CurrentlyReading />
-      <FriendProgress />
+      <RecentlyReviews />
     </div>
   );
 };
