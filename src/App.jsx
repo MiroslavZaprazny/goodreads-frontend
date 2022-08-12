@@ -25,7 +25,7 @@ const App = () => {
     <Router>
       <Navbar user={user} setUser={setUser} />
       <Routes>
-        <Route path="/" element={<Home user={user} />} />
+        <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register setUser={setUser} />} />
       </Routes>
     </Router>

@@ -1,8 +1,14 @@
 import React from 'react';
+import CurrentlyReading from './CurrentlyReading';
+import FriendProgress from './FriendProgress';
 
-const Home = (props) => {
-  const { user } = props;
-  return <div>{user.name}</div>;
+const Home = () => {
+  return (
+    <div className="main-page flex">
+      <CurrentlyReading />
+      <FriendProgress />
+    </div>
+  );
 };
 
 export default Home;

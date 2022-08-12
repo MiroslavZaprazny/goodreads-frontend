@@ -4,11 +4,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'navy': '#607EAA',
-        'light-blue' :'#748DA6',
-        'pastel-blue':'#6E85B7'
+        navy: '#607EAA',
+        'light-blue': '#748DA6',
+        'pastel-blue': '#6E85B7',
       },
+      spacing:{
+        160: '40rem'
+      }
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/line-clamp')],
 };

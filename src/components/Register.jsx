@@ -82,7 +82,10 @@ const Register = (props) => {
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
                 <Dialog.Panel className="relative bg-white rounded-xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full">
-                  <Login setUser={props.setUser} setIsLoginVisable={setIsLoginVisable} />
+                  <Login
+                    setUser={props.setUser}
+                    setIsLoginVisable={setIsLoginVisable}
+                  />
                 </Dialog.Panel>
               </Transition.Child>
             </div>
