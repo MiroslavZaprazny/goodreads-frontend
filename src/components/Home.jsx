@@ -2,10 +2,10 @@ import React from 'react';
 import CurrentlyReading from './CurrentlyReading';
 import RecentlyReviews from './RecentlyReviews';
 
-const Home = () => {
+const Home = (props) => {
   return (
     <div className="main-page flex flex-col lg:flex-row ">
-      <CurrentlyReading />
+      <CurrentlyReading user={props.user}/>
       <RecentlyReviews />
     </div>
   );
