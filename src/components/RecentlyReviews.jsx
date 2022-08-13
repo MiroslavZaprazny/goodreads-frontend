@@ -27,9 +27,12 @@ const RecentlyReviews = () => {
         See recently posted reviews!
       </h3>
       {isLoading &&
-        [...Array(5)].map(() => {
+        [...Array(5)].map((arr, i) => {
           return (
-            <div className="card flex mt-8 border px-4 py-6 rounded-xl w-160">
+            <div
+              key={i}
+              className="card flex mt-8 border px-4 py-6 rounded-xl w-160"
+            >
               <div className="img-cotainer border-r pr-4">
                 <div className="avatar w-10 h-10 rounded-full bg-gray-300"></div>
               </div>
