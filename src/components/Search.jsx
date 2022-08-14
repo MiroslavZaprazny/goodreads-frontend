@@ -1,0 +1,81 @@
+import React from 'react';
+import { useState, useEffect } from 'react';
+
+const Search = () => {
+  const [search, setSearch] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  useEffect(() => {
+    if (search.length >= 2) {
+      const fetchSearch = async () => {
+        const response = await fetch('http://127.0.0.1:8000/api/search', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          body: JSON.stringify({ search: search }),
+        });
+        const content = await response.json();
+        setSearchResults(content);
+      };
+      fetchSearch();
+    }
+  }, [search]);
+  return (
+    <div className="relative">
+      <input
+        type="text"
+        onChange={(e) => setSearch(e.target.value)}
+        className="rounded-xl py-2 px-4 border"
+        placeholder="Search for books..."
+      />
+      {search.length >= 2 && (
+        <div className="absolute search-results flex flex-col bg-gray-100 border space-y-4 rounded-lg w-full py-2 px-3 mt-1 transition ease-in duration-500">
+          {searchResults.map((result) => {
+            return (
+              <div key={result.id}
+              className='flex border-b pb-2'>
+                <div className="img">
+                  <img
+                    src="../../public/images/test_cover.jpg"
+                    alt="img cover"
+                    className="w-10 h-16"
+                  />
+                </div>
+                <div className="book-description flex flex-col">
+                  <div className="book-title ml-4 text-gray-700 font-medium text-md">
+                    {result.title}
+                  </div>
+                  <p className="text-gray-500 text-sm ml-4">
+                    by{' '}
+                    <span className="text-gray-700 font-medium">
+                      Cal Newport
+                    </span>
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+      <div className="absolute top-0 right-0 mt-3 mr-3">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
+        </svg>
+      </div>
+    </div>
+  );
+};
+
+export default Search;

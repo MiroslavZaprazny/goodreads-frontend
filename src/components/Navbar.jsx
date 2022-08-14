@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import Search from './Search';
 
 const Navbar = (props) => {
   const { user, setUser } = props;
@@ -50,7 +51,10 @@ const Navbar = (props) => {
             />
           </NavLink>
         </div>
-        <div className="nav-links mr-28 space-x-4">{menu}</div>
+        <div className="nav-links mr-28 space-x-28 flex items-center">
+          <Search />
+          {menu}
+        </div>
       </div>
     </ul>
   );
