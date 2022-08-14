@@ -31,7 +31,6 @@ const CurrentlyReading = (props) => {
   }, [props.user]);
 
   const setCurrentBookPage = () => {
-    console.log(bookPage)
     if (bookPage != undefined) {
       const sendData = async () => {
         const response = await fetch(
@@ -51,6 +50,27 @@ const CurrentlyReading = (props) => {
 
         const message = await response.json();
         console.log(message);
+        setBook(message);
+      };
+      sendData();
+      setOpen(false);
+    } else {
+      const sendData = async () => {
+        const response = await fetch(
+          'http://127.0.0.1:8000/api/set-current-page',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: JSON.stringify({
+              status: 0,
+              user_id: book.user_id,
+            }),
+          }
+        );
+        const message = await response.json();  
         setBook(message);
       };
       sendData();
@@ -124,7 +144,7 @@ const CurrentlyReading = (props) => {
             </div>
           </div>
         )}
-        {/* {!book && !isLoading && (
+        {/* {!isLoading && !book && (
           <div className="flex flex-col items-center text-gray-700 mt-4 pb-3 text-lg">
             Add a book that you are currently reading!
             <button className="border bg-gray-50 rounded-xl text-sm hover:bg-gray-100 hover:text-gray-800 transition ease-in duration-150 px-2 py-2 mt-2">
