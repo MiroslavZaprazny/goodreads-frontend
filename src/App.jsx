@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
+import Book from './components/Book';
 import Home from './components/Home';
 import Login from './components/Login';
 import Navbar from './components/Navbar';
@@ -27,6 +28,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home user={user} />} />
         <Route path="/register" element={<Register setUser={setUser} />} />
+        <Route path="/:book" element={<Book />} />
       </Routes>
     </Router>
   );

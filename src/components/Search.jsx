@@ -1,9 +1,11 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Search = () => {
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  console.log(searchResults);
   useEffect(() => {
     if (search.length >= 2) {
       const fetchSearch = async () => {
@@ -22,25 +24,26 @@ const Search = () => {
     }
   }, [search]);
   return (
-    <div className="relative">
+    <div className="relative w-64">
       <input
         type="text"
+        defaultValue={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="rounded-xl py-2 px-4 border"
+        className="rounded-xl py-2 px-4 border w-full"
         placeholder="Search for books..."
       />
       {search.length >= 2 && (
         <div className="absolute search-results flex flex-col bg-gray-100 border space-y-4 rounded-lg w-full py-2 px-3 mt-1 transition ease-in duration-500">
           {searchResults.map((result) => {
             return (
-              <div key={result.id}
-              className='flex border-b pb-2'>
+              <Link
+                to={result.title}
+                onClick={() => setSearch('')}
+                key={result.id}
+                className="flex border-b pb-2"
+              >
                 <div className="img">
-                  <img
-                    src="../../public/images/test_cover.jpg"
-                    alt="img cover"
-                    className="w-10 h-16"
-                  />
+                  <img src={result.img} alt="img cover" className="w-10 h-16" />
                 </div>
                 <div className="book-description flex flex-col">
                   <div className="book-title ml-4 text-gray-700 font-medium text-md">
@@ -49,13 +52,18 @@ const Search = () => {
                   <p className="text-gray-500 text-sm ml-4">
                     by{' '}
                     <span className="text-gray-700 font-medium">
-                      Cal Newport
+                      {result.author.name}
                     </span>
                   </p>
                 </div>
-              </div>
+              </Link>
             );
           })}
+          {searchResults.length === 0 && (
+            <div className="text-sm font-medium">
+              No results where found for "{search}"
+            </div>
+          )}
         </div>
       )}
       <div className="absolute top-0 right-0 mt-3 mr-3">

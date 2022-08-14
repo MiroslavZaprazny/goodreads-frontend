@@ -88,7 +88,7 @@ const CurrentlyReading = (props) => {
           <div className="description flex py-2 px-1">
             <div className="img-container flex-shrink-0">
               <img
-                src="../../public/images/test_cover.jpg"
+                src={book.book.img}
                 className="w-24 mt-1 rounded-md"
               />
             </div>
@@ -217,7 +217,7 @@ const CurrentlyReading = (props) => {
                     <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                       <button
                         type="button"
-                        className="w-full inline-flex justify-center rounded-md border shadow-sm px-4 py-2  bg-blue-400 text-gray-50 text-base font-medium hover:bg-blue-500 hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
+                        className="w-full inline-flex justify-center rounded-md border shadow-sm px-4 py-2  bg-blue-400 text-gray-50 text-base font-medium hover:bg-blue-500 hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm transition ease-in duration-150"
                         onClick={setCurrentBookPage}
                       >
                         Update progress

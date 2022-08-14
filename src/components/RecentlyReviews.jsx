@@ -105,7 +105,7 @@ const RecentlyReviews = () => {
                 <div className="book-container mt-4 flex space-x-4">
                   <div className="img flex-shrink-0">
                     <img
-                      src="../../public/images/test_cover.jpg"
+                      src={review.book.img}
                       alt="book-cover"
                       className="h-20 w-14 rounded-sm"
                     />
