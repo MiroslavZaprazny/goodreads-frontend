@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const RecentlyReviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -92,9 +93,13 @@ const RecentlyReviews = () => {
                       {review.user.name}
                     </span>{' '}
                     rated
-                    <span className="text-gray-700 font-semibold text-md">
+                    <Link
+                      to={review.book.title}
+                      state={{ data: review.book }}
+                      className="text-gray-700 font-semibold text-md hover:underline"
+                    >
                       {review.book.title}
-                    </span>
+                    </Link>
                     <span>as</span>
                     <span className="font-semibold text-gray-700">
                       {review.rating}/10
@@ -103,13 +108,17 @@ const RecentlyReviews = () => {
                   <p className="text-gray-500 text-sm">{review.created_at}</p>
                 </div>
                 <div className="book-container mt-4 flex space-x-4">
-                  <div className="img flex-shrink-0">
+                  <Link
+                    to={review.book.title}
+                    state={{ data: review.book }}
+                    className="img flex-shrink-0"
+                  >
                     <img
                       src={review.book.img}
                       alt="book-cover"
                       className="h-20 w-14 rounded-sm"
                     />
-                  </div>
+                  </Link>
                   <div className="book-description">
                     <p className="line-clamp-4 text-gray-700">
                       {review.body ? review.body : review.book.description}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { Link } from 'react-router-dom';
 
 const CurrentlyReading = (props) => {
   const [book, setBook] = useState();
@@ -70,13 +71,15 @@ const CurrentlyReading = (props) => {
             }),
           }
         );
-        const message = await response.json();  
+        const message = await response.json();
         setBook(message);
       };
       sendData();
       setOpen(false);
     }
   };
+
+  console.log(book);
 
   return (
     <div className="py-20 px-36">
@@ -86,14 +89,21 @@ const CurrentlyReading = (props) => {
         </h4>
         {book && (
           <div className="description flex py-2 px-1">
-            <div className="img-container flex-shrink-0">
-              <img
-                src={book.book.img}
-                className="w-24 mt-1 rounded-md"
-              />
-            </div>
+            <Link
+              to={book.book.title}
+              state={{ data: book.book }}
+              className="img-container flex-shrink-0"
+            >
+              <img src={book.book.img} className="w-24 mt-1 rounded-md" />
+            </Link>
             <div className="text-lg ml-3 mt-1">
-              <p className="text-gray-700 font-semibold">{book.book.title}</p>
+              <Link
+                to={book.book.title}
+                state={{ data: book.book }}
+                className="text-gray-700 font-semibold hover:underline"
+              >
+                {book.book.title}
+              </Link>
               <p className="text-gray-600 text-sm">
                 by{' '}
                 <span className="text-sm font-semibold text-gray-700">

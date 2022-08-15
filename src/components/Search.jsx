@@ -38,6 +38,7 @@ const Search = () => {
             return (
               <Link
                 to={result.title}
+                state={{ data: result}}
                 onClick={() => setSearch('')}
                 key={result.id}
                 className="flex border-b pb-2"
