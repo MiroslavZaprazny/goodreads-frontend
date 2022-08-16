@@ -83,7 +83,7 @@ const RecentlyReviews = () => {
               key={review.id}
               className="card flex mt-8 border px-4 py-6 rounded-xl w-160"
             >
-              <div className="img-cotainer border-r pr-4">
+              <div className="img-cotainer flex-shrink-0 border-r pr-4">
                 <img
                   src={review.user.avatar}
                   className="avatar w-10 h-10 rounded-full"
