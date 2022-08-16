@@ -6,7 +6,7 @@ const Home = (props) => {
   return (
     <div className="main-page flex flex-col lg:flex-row ">
       <CurrentlyReading user={props.user}/>
-      <RecentlyReviews />
+      <RecentlyReviews user={props.user} />
     </div>
   );
 };

@@ -84,7 +84,10 @@ const RecentlyReviews = () => {
               className="card flex mt-8 border px-4 py-6 rounded-xl w-160"
             >
               <div className="img-cotainer border-r pr-4">
-                <div className="avatar w-10 h-10 rounded-full bg-black"></div>
+                <img
+                  src={review.user.avatar}
+                  className="avatar w-10 h-10 rounded-full"
+                />
               </div>
               <div className="progress w-full ml-2 px-2">
                 <div className="flex justify-between">

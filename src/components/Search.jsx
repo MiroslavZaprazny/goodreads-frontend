@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 const Search = () => {
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  console.log(searchResults);
   useEffect(() => {
     if (search.length >= 2) {
       const fetchSearch = async () => {

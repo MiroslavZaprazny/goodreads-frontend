@@ -50,7 +50,6 @@ const CurrentlyReading = (props) => {
         );
 
         const message = await response.json();
-        console.log(message);
         setBook(message);
       };
       sendData();
@@ -78,8 +77,6 @@ const CurrentlyReading = (props) => {
       setOpen(false);
     }
   };
-
-  console.log(book);
 
   return (
     <div className="py-20 px-36">
