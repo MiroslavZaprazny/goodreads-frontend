@@ -4,6 +4,7 @@ import Book from './components/Book';
 import Home from './components/Home';
 import Login from './components/Login';
 import Navbar from './components/Navbar';
+import Profile from './components/Profile';
 import Register from './components/Register';
 
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
         <Route path="/" element={<Home user={user} />} />
         <Route path="/register" element={<Register setUser={setUser} />} />
         <Route path="/:book" element={<Book />} />
+        <Route path="/profile/:email" element={<Profile />} />
       </Routes>
     </Router>
   );

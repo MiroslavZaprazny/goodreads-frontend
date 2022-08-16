@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
 const Book = () => {
-  const { book } = useParams();
   const location = useLocation();
   const { data } = location.state;
   const [booksFromAuthor, setBooksFromAuthor] = useState([]);
