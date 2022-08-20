@@ -56,7 +56,7 @@ const Book = () => {
 
   const handleInput = () => {
     const sendReview = async () => {
-      const response = await fetch('http://127.0.0.1:8000/api/post-review', {
+      const response = await fetch('http://127.0.0.1:8000/api/reviews', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const Book = () => {
         <div className="flex flex-col">
           <div className="book-info flex border-b pb-6">
             <div className="book-img flex-shrink-0 flex-grow-0">
-              <img src={data.img} alt="Book cover" className="w-38 h-60" />
+              <img src={data.img} alt="Book cover" className="w-38 h-60 rounded" />
             </div>
             <div className="book-description ml-8">
               <p className="font-semibold text-2xl text-gray-700">
@@ -121,7 +121,7 @@ const Book = () => {
                       key={review.id}
                       className="card flex mt-8 border px-4 py-6 rounded-xl w-full"
                     >
-                      <div className="img-cotainer border-r pr-4">
+                      <div className="flex-shrink-0 img-cotainer border-r pr-4">
                         <img
                           src={review.user.avatar}
                           className="avatar w-10 h-10 rounded-full"
@@ -243,7 +243,7 @@ const Book = () => {
                   return (
                     <div key={book.id} className="flex border-b pb-4">
                       <div>
-                        <img src={book.img} alt="" className="w-20 h-28 " />
+                        <img src={book.img} alt="" className="w-20 h-28 rounded" />
                       </div>
                       <div className="ml-5 font-semibold text-lg text-gray-700">
                         {book.title}
