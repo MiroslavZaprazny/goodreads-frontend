@@ -36,9 +36,9 @@ const Navbar = (props) => {
               onClick={() => {
                 setSettingMenuIsVisible(!settingMenuIsVisible);
               }}
-              onBlur={() => {
-                setSettingMenuIsVisible(false);
-              }}
+              // onBlur={() => {
+              //   setSettingMenuIsVisible(false);
+              // }}
               className="relative"
             >
               <img
@@ -52,11 +52,11 @@ const Navbar = (props) => {
                     initial={{ opacity: 0, scale: 0.75 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0 }}
-                    className="absolute -bottom-12 -left-8 border bg-gray-100 rounded-xl w-28 px-3 py-2"
+                    className="absolute -bottom-20 -left-8 border bg-gray-100 rounded-xl w-28 px-3 py-2 cursor-default space-y-4"
                   >
                     <Link
-                      to={'profile/' + user.email}
-                      className="flex items-center text-sm font-medium space-x-2"
+                      to={'profile/settings/' + user.email}
+                      className="flex items-center justify-center text-sm font-medium space-x-2 border-b pb-1"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -79,6 +79,29 @@ const Navbar = (props) => {
                       </svg>
                       <div className="text-gray-600 hover:text-gray-900 transition ease-in duration-150">
                         Settings
+                      </div>
+                    </Link>
+                    <Link
+                      to={'profile/' + user.email}
+                      state={{ user: user }}
+                      className="flex items-center justify-center text-sm font-medium space-x-2"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                        />
+                      </svg>
+                      <div className="text-gray-600 hover:text-gray-900 transition ease-in duration-150">
+                        Profile
                       </div>
                     </Link>
                   </motion.div>

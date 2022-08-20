@@ -119,7 +119,7 @@ const RecentlyReviews = () => {
                     <img
                       src={review.book.img}
                       alt="book-cover"
-                      className="h-20 w-14 rounded-sm"
+                      className="h-20 w-14 rounded"
                     />
                   </Link>
                   <div className="book-description">
