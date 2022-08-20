@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { Link } from 'react-router-dom';
+import WantToRead from './WantToRead';
 
 const CurrentlyReading = (props) => {
   const [book, setBook] = useState();
@@ -244,6 +245,8 @@ const CurrentlyReading = (props) => {
           </Dialog>
         </Transition.Root>
       </div>
+
+      <WantToRead user={props.user} />
     </div>
   );
 };

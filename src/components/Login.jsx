@@ -73,16 +73,16 @@ const Login = (props) => {
       <div className="flex justify-between">
         <button
           onClick={handleSubmit}
-          className="rounded-lg border font-semibold text-sm text-gray-700 hover:bg-gray-100 transition ease-out duration-300 px-8 py-2"
+          className="rounded-lg border font-semibold text-sm text-white bg-gray-600 hover:bg-gray-700 transition ease-out duration-300 px-8 py-2"
         >
           Login
         </button>
-        <button
+        {/* <button
           onClick={() => props.setIsLoginVisable(false)}
           className="bg-gray-600 hover:bg-gray-700 rounded-lg text-white border text-sm px-8 py-2 transition ease-out duration-300"
         >
           Close
-        </button>
+        </button> */}
       </div>
     </div>
   );
