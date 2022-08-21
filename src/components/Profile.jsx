@@ -8,6 +8,7 @@ const Profile = () => {
   const location = useLocation();
   const { user } = location.state;
   const [open, setOpen] = useState(false);
+  const [wantToReadBooks, setWantToReadBooks] = useState();
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -21,9 +22,24 @@ const Profile = () => {
         }
       );
       const content = await response.json();
-      console.log(books);
       setBooks(content);
     };
+
+    const fetchWantToReadBooks = async () => {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/want-to-read/${user.id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+          },
+        }
+      );
+      const content = await response.json();
+      setWantToReadBooks(content);
+    };
+
+    fetchWantToReadBooks();
     fetchBooks();
   }, [JSON.stringify(books)]);
   return (
@@ -34,7 +50,7 @@ const Profile = () => {
       {books &&
         books.map((book) => {
           return (
-            <>
+            <div key={book.id}>
               <ChangeRatingModal
                 open={open}
                 setOpen={setOpen}
@@ -42,10 +58,7 @@ const Profile = () => {
                 user={user}
                 book={book}
               />
-              <div
-                key={book.id}
-                className="w-1/2 border bg-gray-50 rounded-lg py-4 px-3 mt-6"
-              >
+              <div className="w-1/2 border bg-gray-50 rounded-lg py-4 px-3 mt-6">
                 <div className="flex justify-between">
                   <div className="flex space-x-4">
                     <Link
@@ -96,14 +109,23 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-            </>
+            </div>
           );
         })}
+
       {books?.length === 0 && (
         <p className="text-gray-600 mt-2">
           You have read no books, get to reading!!
         </p>
       )}
+
+      <div className="want-to-read mt-12">
+        <h3 className="font-semibold text-xl">Books you want to read!</h3>
+        {wantToReadBooks &&
+          wantToReadBooks.map((book) => {
+            return book.book.title;
+          })}
+      </div>
     </div>
   );
 };

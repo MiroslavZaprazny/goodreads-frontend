@@ -4,6 +4,7 @@ import { ExclamationIcon } from "@heroicons/react/outline";
 
 const ChangeRatingModal = (props) => {
   const { open, setOpen, setBooks, user, book } = props;
+  console.log(book);
 
   const removeReadBook = async () => {
     const response = await fetch(
@@ -62,13 +63,12 @@ const ChangeRatingModal = (props) => {
                         as="h3"
                         className="text-lg leading-6 font-medium text-gray-900"
                       >
-                        Deactivate account
+                        Remove {book.book.title} from the books you read!
                       </Dialog.Title>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                          Are you sure you want to deactivate your account? All
-                          of your data will be permanently removed. This action
-                          cannot be undone.
+                          Are you sure you want to remove {book.book.title} from
+                          the book you read? This action cannot be undone.
                         </p>
                       </div>
                     </div>
@@ -80,7 +80,7 @@ const ChangeRatingModal = (props) => {
                     className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
                     onClick={removeReadBook}
                   >
-                    Deactivate
+                    Remove
                   </button>
                   <button
                     type="button"

@@ -1,47 +1,50 @@
-import React, { useEffect, useState } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
-import { Link } from 'react-router-dom';
-import WantToRead from './WantToRead';
+import React, { useEffect, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { Link } from "react-router-dom";
+import WantToRead from "./WantToRead";
 
 const CurrentlyReading = (props) => {
   const [book, setBook] = useState();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [open, setOpen] = useState(false);
-  const [select, setSelect] = useState('Reading');
+  const [select, setSelect] = useState("Reading");
   const [bookPage, setBookPage] = useState();
 
+  console.log(book);
+
   useEffect(() => {
-    setIsLoading(true);
     const fetchCurrenltyReadingBook = async () => {
       const response = await fetch(
-        'http://127.0.0.1:8000/api/currently-reading',
+        "http://127.0.0.1:8000/api/currently-reading",
         {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-            mode: 'no-cors',
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            mode: "no-cors",
           },
           body: JSON.stringify({ user_id: props.user.id }),
         }
       );
       const data = await response.json();
       setBook(data.book[0]);
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
     };
     fetchCurrenltyReadingBook();
-  }, [props.user]);
+  }, [props.user, JSON.stringify(book)]);
 
   const setCurrentBookPage = () => {
     if (bookPage != undefined) {
       const sendData = async () => {
         const response = await fetch(
-          'http://127.0.0.1:8000/api/set-current-page',
+          "http://127.0.0.1:8000/api/set-current-page",
           {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
-              'X-Requested-With': 'XMLHttpRequest',
+              "Content-Type": "application/json",
+              "X-Requested-With": "XMLHttpRequest",
             },
             body: JSON.stringify({
               user_id: book.user_id,
@@ -58,16 +61,17 @@ const CurrentlyReading = (props) => {
     } else {
       const sendData = async () => {
         const response = await fetch(
-          'http://127.0.0.1:8000/api/set-current-page',
+          "http://127.0.0.1:8000/api/set-current-page",
           {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
-              'X-Requested-With': 'XMLHttpRequest',
+              "Content-Type": "application/json",
+              "X-Requested-With": "XMLHttpRequest",
             },
             body: JSON.stringify({
               status: 0,
               user_id: book.user_id,
+              book_id: book.id,
             }),
           }
         );
@@ -103,10 +107,10 @@ const CurrentlyReading = (props) => {
                 {book.book.title}
               </Link>
               <p className="text-gray-600 text-sm">
-                by{' '}
+                by{" "}
                 <span className="text-sm font-semibold text-gray-700">
                   {book.book.author.name}
-                </span>{' '}
+                </span>{" "}
               </p>
               <div className="progress text-sm text-gray-600 mt-3 ml-1">
                 Read {book.current_page} pages out of {book.book.pages}
@@ -123,6 +127,15 @@ const CurrentlyReading = (props) => {
           </div>
         )}
 
+        {!book && !isLoading && (
+          <div className="flex flex-col items-center text-gray-700 mt-4 pb-3 text-lg">
+            Add a book that you are currently reading!
+            <button className="border bg-gray-50 rounded-xl text-sm hover:bg-gray-100 hover:text-gray-800 transition ease-in duration-150 px-2 py-2 mt-2">
+              Add a book
+            </button>
+          </div>
+        )}
+
         {isLoading && (
           <div className="description flex py-2 px-1">
             <div className="img-container flex-shrink-0">
@@ -133,10 +146,10 @@ const CurrentlyReading = (props) => {
                 Title goes here
               </p>
               <p className="text-gray-600 text-sm text-transparent bg-gray-50">
-                by{' '}
+                by{" "}
                 <span className="text-sm font-semibold text-gray-700 bg-gray-100 text-transparent">
                   Name of the book goes here
-                </span>{' '}
+                </span>{" "}
               </p>
               <div className="progress text-sm text-gray-600 mt-3 ml-1 text-transparent bg-gray-50">
                 Read num of pages out of num of pages
@@ -152,14 +165,6 @@ const CurrentlyReading = (props) => {
             </div>
           </div>
         )}
-        {/* {!isLoading && !book && (
-          <div className="flex flex-col items-center text-gray-700 mt-4 pb-3 text-lg">
-            Add a book that you are currently reading!
-            <button className="border bg-gray-50 rounded-xl text-sm hover:bg-gray-100 hover:text-gray-800 transition ease-in duration-150 px-2 py-2 mt-2">
-              Add a book
-            </button>
-          </div>
-        )} */}
         <Transition.Root show={open}>
           <Dialog as="div" className="relative z-10" onClose={setOpen}>
             <Transition.Child
@@ -194,7 +199,7 @@ const CurrentlyReading = (props) => {
                             Update Progress
                           </Dialog.Title>
                           <div className="mt-4 text-sm text-gray-500">
-                            {book && select === 'Reading' && (
+                            {book && select === "Reading" && (
                               <div className="flex">
                                 <input
                                   type="text"

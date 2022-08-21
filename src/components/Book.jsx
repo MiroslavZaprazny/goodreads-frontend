@@ -1,6 +1,6 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React from "react";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const Book = () => {
   const location = useLocation();
@@ -9,58 +9,79 @@ const Book = () => {
   const [genres, setGenres] = useState();
   const [reviewInput, setReviewInput] = useState();
   const [reviews, setReviews] = useState();
-
-  const fetchReviews = async () => {
-    const response = await fetch(
-      `http://127.0.0.1:8000/api/reviews/${data.id}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-      }
-    );
-    const content = await response.json();
-    setReviews(content);
-  };
+  const [wantToRead, setWatToRead] = useState(false);
 
   useEffect(() => {
     const fetchAuthor = async () => {
-      const response = await fetch('http://127.0.0.1:8000/api/author', {
-        method: 'POST',
+      const response = await fetch("http://127.0.0.1:8000/api/author", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
         },
         body: JSON.stringify({ author_id: data.author.id }),
       });
       const content = await response.json();
       setBooksFromAuthor(content);
     };
+
     const fetchGenres = async () => {
-      const response = await fetch('http://127.0.0.1:8000/api/genres', {
-        method: 'POST',
+      const response = await fetch("http://127.0.0.1:8000/api/genres", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
         },
         body: JSON.stringify({ book_id: data.id }),
       });
       const content = await response.json();
       setGenres(content);
     };
+
+    const fetchReviews = async () => {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/reviews/${data.id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+          },
+        }
+      );
+      const content = await response.json();
+      setReviews(content);
+    };
+
+    const fetchIsBookWantToRead = async () => {
+      //TODO: Make user dynamic
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/want-to-read/11`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ book_id: data.id }),
+        }
+      );
+
+      const content = await response.json();
+      setWatToRead(content);
+    };
+
     fetchAuthor();
     fetchGenres();
     fetchReviews();
+    fetchIsBookWantToRead();
   }, [JSON.stringify(reviews)]);
 
   const handleInput = () => {
     const sendReview = async () => {
-      const response = await fetch('http://127.0.0.1:8000/api/reviews', {
-        method: 'POST',
+      const response = await fetch("http://127.0.0.1:8000/api/reviews", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
         },
         //TODO dynamicky user
         body: JSON.stringify({
@@ -78,13 +99,55 @@ const Book = () => {
     sendReview();
   };
 
+  const removeFromWantToRead = () => {
+    const removeBook = async () => {
+      //TODO: dynamic user
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/want-to-read/11`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ book_id: data.id }),
+        }
+      );
+    };
+    removeBook();
+    setWatToRead(false);
+  };
+
+  const addToWantToRead = () => {
+    const addBook = async () => {
+      //TODO: dynamic user
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/add-want-to-read/11`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ book_id: data.id }),
+        }
+      );
+      const content = await response.json();
+      console.log(content);
+    };
+    addBook();
+    setWatToRead(true);
+  };
+
   return (
     <div className="container px-48 py-16">
       <div className="flex flex-col lg:flex-row justify-between w-full">
         <div className="flex flex-col">
           <div className="book-info flex border-b pb-6">
             <div className="book-img flex-shrink-0 flex-grow-0">
-              <img src={data.img} alt="Book cover" className="w-38 h-60 rounded" />
+              <img
+                src={data.img}
+                alt="Book cover"
+                className="w-38 h-60 rounded"
+              />
             </div>
             <div className="book-description ml-8">
               <p className="font-semibold text-2xl text-gray-700">
@@ -106,6 +169,55 @@ const Book = () => {
               <p className="text-sm text-gray-600 leading-6 mt-2 line-clamp-5 lg:line-clamp-none">
                 {data.description}
               </p>
+              <div className="flex justify-end mt-4">
+                {wantToRead === true && (
+                  <button
+                    onClick={removeFromWantToRead}
+                    className="flex items-center rounded-lg border 
+                  bg-gray-50 text-sm text-gray-500
+                  hover:bg-gray-100 transition ease-in duration-150 px-4 py-2 space-x-1"
+                  >
+                    <svg
+                      className="h-6 w-6 text-green-700"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span>Added</span>
+                  </button>
+                )}
+
+                {wantToRead === false && (
+                  <button
+                    onClick={addToWantToRead}
+                    className="flex items-center rounded-lg border 
+                    bg-gray-50 text-sm text-gray-500
+                    hover:bg-gray-100 transition ease-in duration-150 px-4 py-2 space-x-1"
+                  >
+                    <svg
+                      className="h-5 w-5 text-gray-700"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                      />
+                    </svg>
+                    <span>Want to read</span>
+                  </button>
+                )}
+              </div>
             </div>
           </div>
 
@@ -132,7 +244,7 @@ const Book = () => {
                           <p className="text-gray-600 text-sm space-x-1">
                             <span className="text-gray-700 font-semibold text-md">
                               {review.user.name}
-                            </span>{' '}
+                            </span>{" "}
                             rated this book
                             <span>as</span>
                             <span className="font-semibold text-gray-700">
@@ -146,7 +258,7 @@ const Book = () => {
                         <div className="book-container mt-4 flex space-x-4">
                           <div className="book-description">
                             <p className="line-clamp-4 text-gray-700">
-                              {review.body ? review.body : ''}
+                              {review.body ? review.body : ""}
                             </p>
                           </div>
                         </div>
@@ -169,7 +281,7 @@ const Book = () => {
                           <p className="text-gray-600 text-sm space-x-1">
                             <span className="text-transparent bg-gray-200 font-semibold text-md">
                               Reviewer name goes here
-                            </span>{' '}
+                            </span>{" "}
                             <span className="text-transparent bg-gray-100">
                               rated this book as
                             </span>
@@ -243,7 +355,11 @@ const Book = () => {
                   return (
                     <div key={book.id} className="flex border-b pb-4">
                       <div>
-                        <img src={book.img} alt="" className="w-20 h-28 rounded" />
+                        <img
+                          src={book.img}
+                          alt=""
+                          className="w-20 h-28 rounded"
+                        />
                       </div>
                       <div className="ml-5 font-semibold text-lg text-gray-700">
                         {book.title}
