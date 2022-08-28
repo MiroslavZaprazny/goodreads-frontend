@@ -84,7 +84,6 @@ const Book = (props) => {
       );
 
       const content = await response.json();
-      console.log(content)
       if (content.book[0]?.book_id === data.id) {
         setCurrReading(true);
       }
@@ -155,7 +154,7 @@ const Book = (props) => {
     };
     addBook();
     setWantToRead(true);
-    removeCurrReading()
+    removeCurrReading();
   };
 
   const addCurrReading = () => {
@@ -172,23 +171,26 @@ const Book = (props) => {
         }
       );
     };
-    addBook()
+    addBook();
     setCurrReading(true);
     removeFromWantToRead();
   };
 
   const removeCurrReading = () => {
     const removeBook = async () => {
-      const response = await fetch("http://127.0.0.1:8000/api/currently-reading", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/currently-reading",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
             "X-Requested-With": "XMLHttpRequest",
-        },
-        body: JSON.stringify({ book_id: data.id, user_id: props.user.id }),
-      });
+          },
+          body: JSON.stringify({ book_id: data.id, user_id: props.user.id }),
+        }
+      );
     };
-    removeBook()
+    removeBook();
     setCurrReading(false);
   };
 
@@ -224,103 +226,105 @@ const Book = (props) => {
               <p className="text-sm text-gray-600 leading-6 mt-2 line-clamp-5 lg:line-clamp-none">
                 {data.description}
               </p>
-              <div className="flex justify-end mt-4 space-x-6">
-                {currReading === true && (
-                  <button
-                    onClick={removeCurrReading}
-                    className="flex items-center rounded-lg border 
+              {props.user.name && (
+                <div className="flex justify-end mt-4 space-x-6">
+                  {currReading === true && (
+                    <button
+                      onClick={removeCurrReading}
+                      className="flex items-center rounded-lg border 
                   bg-gray-50 text-sm text-gray-500
                   hover:bg-gray-100 transition ease-in duration-150 px-4 py-2 space-x-1"
-                  >
-                    <svg
-                      className="h-6 w-6 text-green-700"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                    <span>Reading</span>
-                  </button>
-                )}
+                      <svg
+                        className="h-6 w-6 text-green-700"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                      <span>Reading</span>
+                    </button>
+                  )}
 
-                {currReading === false && (
-                  <button
-                    onClick={addCurrReading}
-                    className="flex items-center rounded-lg border 
+                  {currReading === false && (
+                    <button
+                      onClick={addCurrReading}
+                      className="flex items-center rounded-lg border 
                     bg-gray-50 text-sm text-gray-500
                     hover:bg-gray-100 transition ease-in duration-150 px-4 py-2 space-x-1"
-                  >
-                    <svg
-                      className="h-5 w-5 text-gray-700"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                      />
-                    </svg>
-                    <span>Add to currently reading</span>
-                  </button>
-                )}
+                      <svg
+                        className="h-5 w-5 text-gray-700"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                        />
+                      </svg>
+                      <span>Add to currently reading</span>
+                    </button>
+                  )}
 
-                {wantToRead === true && (
-                  <button
-                    onClick={removeFromWantToRead}
-                    className="flex items-center rounded-lg border 
+                  {wantToRead === true && (
+                    <button
+                      onClick={removeFromWantToRead}
+                      className="flex items-center rounded-lg border 
                   bg-gray-50 text-sm text-gray-500
                   hover:bg-gray-100 transition ease-in duration-150 px-4 py-2 space-x-1"
-                  >
-                    <svg
-                      className="h-6 w-6 text-green-700"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                    <span>Planning to read</span>
-                  </button>
-                )}
+                      <svg
+                        className="h-6 w-6 text-green-700"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                      <span>Planning to read</span>
+                    </button>
+                  )}
 
-                {wantToRead === false && (
-                  <button
-                    onClick={addToWantToRead}
-                    className="flex items-center rounded-lg border 
+                  {wantToRead === false && (
+                    <button
+                      onClick={addToWantToRead}
+                      className="flex items-center rounded-lg border 
                     bg-gray-50 text-sm text-gray-500
                     hover:bg-gray-100 transition ease-in duration-150 px-4 py-2 space-x-1"
-                  >
-                    <svg
-                      className="h-5 w-5 text-gray-700"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                      />
-                    </svg>
-                    <span>Want to read</span>
-                  </button>
-                )}
-              </div>
+                      <svg
+                        className="h-5 w-5 text-gray-700"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                        />
+                      </svg>
+                      <span>Want to read</span>
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
@@ -412,24 +416,29 @@ const Book = (props) => {
                   );
                 })}
             </div>
-            <h4 className="font-semibold text-lg text-gray-700 mt-12 mb-2">
-              Write a review
-            </h4>
-            <textarea
-              rows="8"
-              onChange={(e) => setReviewInput(e.target.value)}
-              className="border-2 px-4 py-2 resize-none rounded-xl w-3/4"
-              placeholder="Share your thoughts on this book..."
-            >
-              {reviewInput}
-            </textarea>
-            <button
-              onClick={handleInput}
-              type="button"
-              className="rounded-xl block mt-2 px-6 py-2 bg-blue-500 text-white hover:bg-blue-600 transition ease-in duration-150"
-            >
-              Submit your review
-            </button>
+            {props.user.name && (
+              <>
+                {" "}
+                <h4 className="font-semibold text-lg text-gray-700 mt-12 mb-2">
+                  Write a review
+                </h4>
+                <textarea
+                  rows="8"
+                  onChange={(e) => setReviewInput(e.target.value)}
+                  className="border-2 px-4 py-2 resize-none rounded-xl w-3/4"
+                  placeholder="Share your thoughts on this book..."
+                >
+                  {reviewInput}
+                </textarea>
+                <button
+                  onClick={handleInput}
+                  type="button"
+                  className="rounded-xl block mt-2 px-6 py-2 bg-blue-500 text-white hover:bg-blue-600 transition ease-in duration-150"
+                >
+                  Submit your review
+                </button>
+              </>
+            )}
           </div>
         </div>
 
