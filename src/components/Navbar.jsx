@@ -146,7 +146,7 @@ const Navbar = (props) => {
         </div>
         <div className="nav-links mr-28 flex items-center">
           <div className="mr-28">
-            <Search />
+            <Search width="w-64"/>
           </div>
           {menu}
         </div>

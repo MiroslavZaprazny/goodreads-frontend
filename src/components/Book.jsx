@@ -2,14 +2,15 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-const Book = () => {
+const Book = (props) => {
   const location = useLocation();
   const { data } = location.state;
   const [booksFromAuthor, setBooksFromAuthor] = useState([]);
   const [genres, setGenres] = useState();
   const [reviewInput, setReviewInput] = useState();
   const [reviews, setReviews] = useState();
-  const [wantToRead, setWatToRead] = useState(false);
+  const [wantToRead, setWantToRead] = useState(false);
+  const [currReading, setCurrReading] = useState(false);
 
   useEffect(() => {
     const fetchAuthor = async () => {
@@ -53,22 +54,43 @@ const Book = () => {
     };
 
     const fetchIsBookWantToRead = async () => {
-      //TODO: Make user dynamic
       const response = await fetch(
-        `http://127.0.0.1:8000/api/want-to-read/11`,
+        `http://127.0.0.1:8000/api/want-to-read/${props.user.id}`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
           },
           body: JSON.stringify({ book_id: data.id }),
         }
       );
 
       const content = await response.json();
-      setWatToRead(content);
+      setWantToRead(content);
     };
 
+    const fetchCurrentlyReading = async () => {
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/currently-reading",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+          },
+          body: JSON.stringify({ user_id: props.user.id }),
+        }
+      );
+
+      const content = await response.json();
+      console.log(content)
+      if (content.book[0]?.book_id === data.id) {
+        setCurrReading(true);
+      }
+    };
+
+    fetchCurrentlyReading();
     fetchAuthor();
     fetchGenres();
     fetchReviews();
@@ -83,15 +105,14 @@ const Book = () => {
           "Content-Type": "application/json",
           "X-Requested-With": "XMLHttpRequest",
         },
-        //TODO dynamicky user
+        //TODO rating
         body: JSON.stringify({
-          user_id: 1,
+          user_id: props.user.id,
           book_id: data.id,
           rating: 1,
           review_body: reviewInput,
         }),
       });
-      //TODO SEt reviewinput na prazny string
       const content = await response.json();
       // setReviews((reviews) => [...reviews, content]);
       reviews.push(content);
@@ -101,40 +122,74 @@ const Book = () => {
 
   const removeFromWantToRead = () => {
     const removeBook = async () => {
-      //TODO: dynamic user
       const response = await fetch(
-        `http://127.0.0.1:8000/api/want-to-read/11`,
+        `http://127.0.0.1:8000/api/want-to-read/${props.user.id}`,
         {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
           },
           body: JSON.stringify({ book_id: data.id }),
         }
       );
     };
     removeBook();
-    setWatToRead(false);
+    setWantToRead(false);
   };
 
   const addToWantToRead = () => {
     const addBook = async () => {
-      //TODO: dynamic user
       const response = await fetch(
-        `http://127.0.0.1:8000/api/add-want-to-read/11`,
+        `http://127.0.0.1:8000/api/add-want-to-read/${props.user.id}`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
           },
           body: JSON.stringify({ book_id: data.id }),
         }
       );
       const content = await response.json();
-      console.log(content);
     };
     addBook();
-    setWatToRead(true);
+    setWantToRead(true);
+    removeCurrReading()
+  };
+
+  const addCurrReading = () => {
+    const addBook = async () => {
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/add-currently-reading",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+          },
+          body: JSON.stringify({ book_id: data.id, user_id: props.user.id }),
+        }
+      );
+    };
+    addBook()
+    setCurrReading(true);
+    removeFromWantToRead();
+  };
+
+  const removeCurrReading = () => {
+    const removeBook = async () => {
+      const response = await fetch("http://127.0.0.1:8000/api/currently-reading", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+        },
+        body: JSON.stringify({ book_id: data.id, user_id: props.user.id }),
+      });
+    };
+    removeBook()
+    setCurrReading(false);
   };
 
   return (
@@ -169,7 +224,55 @@ const Book = () => {
               <p className="text-sm text-gray-600 leading-6 mt-2 line-clamp-5 lg:line-clamp-none">
                 {data.description}
               </p>
-              <div className="flex justify-end mt-4">
+              <div className="flex justify-end mt-4 space-x-6">
+                {currReading === true && (
+                  <button
+                    onClick={removeCurrReading}
+                    className="flex items-center rounded-lg border 
+                  bg-gray-50 text-sm text-gray-500
+                  hover:bg-gray-100 transition ease-in duration-150 px-4 py-2 space-x-1"
+                  >
+                    <svg
+                      className="h-6 w-6 text-green-700"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span>Reading</span>
+                  </button>
+                )}
+
+                {currReading === false && (
+                  <button
+                    onClick={addCurrReading}
+                    className="flex items-center rounded-lg border 
+                    bg-gray-50 text-sm text-gray-500
+                    hover:bg-gray-100 transition ease-in duration-150 px-4 py-2 space-x-1"
+                  >
+                    <svg
+                      className="h-5 w-5 text-gray-700"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                      />
+                    </svg>
+                    <span>Add to currently reading</span>
+                  </button>
+                )}
+
                 {wantToRead === true && (
                   <button
                     onClick={removeFromWantToRead}
@@ -190,7 +293,7 @@ const Book = () => {
                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                       />
                     </svg>
-                    <span>Added</span>
+                    <span>Planning to read</span>
                   </button>
                 )}
 

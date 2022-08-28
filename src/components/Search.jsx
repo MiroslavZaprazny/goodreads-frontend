@@ -1,18 +1,18 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
-const Search = () => {
-  const [search, setSearch] = useState('');
+const Search = (props) => {
+  const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   useEffect(() => {
     if (search.length >= 2) {
       const fetchSearch = async () => {
-        const response = await fetch('http://127.0.0.1:8000/api/search', {
-          method: 'POST',
+        const response = await fetch("http://127.0.0.1:8000/api/search", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
           },
           body: JSON.stringify({ search: search }),
         });
@@ -23,7 +23,7 @@ const Search = () => {
     }
   }, [search]);
   return (
-    <div className="relative w-64">
+    <div className={`relative ${props.width}`}>
       <input
         type="text"
         defaultValue={search}
@@ -37,8 +37,8 @@ const Search = () => {
             return (
               <Link
                 to={result.title}
-                state={{ data: result}}
-                onClick={() => setSearch('')}
+                state={{ data: result }}
+                onClick={() => setSearch("")}
                 key={result.id}
                 className="flex border-b pb-2"
               >
@@ -50,7 +50,7 @@ const Search = () => {
                     {result.title}
                   </div>
                   <p className="text-gray-500 text-sm ml-4">
-                    by{' '}
+                    by{" "}
                     <span className="text-gray-700 font-medium">
                       {result.author.name}
                     </span>

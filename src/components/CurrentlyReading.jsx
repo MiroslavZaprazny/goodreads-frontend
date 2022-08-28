@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Link } from "react-router-dom";
 import WantToRead from "./WantToRead";
+import Search from "./Search";
 
 const CurrentlyReading = (props) => {
   const [book, setBook] = useState();
@@ -9,8 +10,6 @@ const CurrentlyReading = (props) => {
   const [open, setOpen] = useState(false);
   const [select, setSelect] = useState("Reading");
   const [bookPage, setBookPage] = useState();
-
-  console.log(book);
 
   useEffect(() => {
     const fetchCurrenltyReadingBook = async () => {
@@ -83,6 +82,10 @@ const CurrentlyReading = (props) => {
     }
   };
 
+  const handleAddCurrReadingBook = () => {
+
+  }
+
   return (
     <div className="py-20 px-36">
       <div className="flex flex-col currently-reading border-b">
@@ -128,11 +131,11 @@ const CurrentlyReading = (props) => {
         )}
 
         {!book && !isLoading && (
-          <div className="flex flex-col items-center text-gray-700 mt-4 pb-3 text-lg">
-            Add a book that you are currently reading!
-            <button className="border bg-gray-50 rounded-xl text-sm hover:bg-gray-100 hover:text-gray-800 transition ease-in duration-150 px-2 py-2 mt-2">
-              Add a book
-            </button>
+          <div className="flex flex-col items-center text-gray-700 mt-2 pb-3 text-lg">
+            Search for a book that you are currently reading!
+            <div className="mt-4">
+            <Search width="w-72" />
+            </div>
           </div>
         )}
 
