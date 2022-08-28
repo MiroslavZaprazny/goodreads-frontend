@@ -2,9 +2,8 @@ import React, { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationIcon } from "@heroicons/react/outline";
 
-const ChangeRatingModal = (props) => {
+const RemoveBookFromReadBooks = (props) => {
   const { open, setOpen, setBooks, user, book } = props;
-  console.log(book);
 
   const removeReadBook = async () => {
     const response = await fetch(
@@ -99,4 +98,4 @@ const ChangeRatingModal = (props) => {
   );
 };
 
-export default ChangeRatingModal;
+export default RemoveBookFromReadBooks;

@@ -1,7 +1,7 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import ChangeRatingModal from "./modals/ChangeRatingModal";
+import RemoveBookFromReadBooks from "./modals/RemoveBookFromReadBooks";
+import NotesModal from "./modals/NotesModal";
 
 const Profile = () => {
   const [books, setBooks] = useState();
@@ -9,8 +9,8 @@ const Profile = () => {
   const { user } = location.state;
   const [open, setOpen] = useState(false);
   const [wantToReadBooks, setWantToReadBooks] = useState();
+  const [openNotesWindow, setOpenNotesWindow] = useState(false);
 
-  useEffect(() => {
     const fetchBooks = async () => {
       const response = await fetch(
         `http://127.0.0.1:8000/api/books-read/${user.id}`,
@@ -25,6 +25,7 @@ const Profile = () => {
       setBooks(content);
     };
 
+  useEffect(() => {
     const fetchWantToReadBooks = async () => {
       const response = await fetch(
         `http://127.0.0.1:8000/api/want-to-read/${user.id}`,
@@ -51,41 +52,73 @@ const Profile = () => {
         books.map((book) => {
           return (
             <div key={book.id}>
-              <ChangeRatingModal
+              <RemoveBookFromReadBooks
                 open={open}
                 setOpen={setOpen}
                 setBooks={setBooks}
                 user={user}
                 book={book}
               />
-              <div className="w-1/2 border bg-gray-50 rounded-lg py-4 px-3 mt-6">
+              <div className="w-full h-72 border bg-gray-50 rounded-lg py-4 px-3 mt-6">
                 <div className="flex justify-between">
-                  <div className="flex space-x-4">
-                    <Link
-                      to={"/" + book.book.title}
-                      state={{ data: book.book }}
-                    >
-                      <img
-                        src={book.book.img}
-                        alt={book.book.name}
-                        className="w-20 h-28"
-                      />
-                    </Link>
-                    <div className="flex flex-col">
-                      <p className="font-semibold text-lg text-gray-700 hover:underline">
-                        <Link
-                          to={"/" + book.book.title}
-                          state={{ data: book.book }}
-                        >
-                          {book.book.title}
-                        </Link>
-                      </p>
-                      <div className="flex items-center font-semibold text-gray-700 space-x-1">
-                        <p className="font-normal text-gray-500 text-sm">by</p>
-                        <p>{book.book.author.name}</p>
+                  <div className="flex">
+                    <div className="flex mt-3 space-x-4">
+                      <Link
+                        to={"/" + book.book.title}
+                        state={{ data: book.book }}
+                      >
+                        <img
+                          src={book.book.img}
+                          alt={book.book.name}
+                          className="w-32 h-42"
+                        />
+                      </Link>
+                      <div className="flex flex-col">
+                        <p className="font-semibold text-xl text-gray-700 hover:underline">
+                          <Link
+                            to={"/" + book.book.title}
+                            state={{ data: book.book }}
+                          >
+                            {book.book.title}
+                          </Link>
+                        </p>
+                        <div className="flex items-center font-semibold text-gray-700 space-x-1">
+                          <p className="font-normal text-gray-500 text-sm">
+                            by
+                          </p>
+                          <p>{book.book.author.name}</p>
+                        </div>
                       </div>
                     </div>
+                    <div
+                      onClick={() => setOpenNotesWindow(true)}
+                      className="w-160 mt-12 ml-44 select-none cursor-pointer"
+                    >
+                      {book.notes && (
+                        <div>
+                          <h4 className="font-semibold text-lg text-gray-600 mb-1">
+                            Your notes
+                          </h4>
+                          <p className="text-gray-500 ml-2 line-clamp-3">
+                            {book.notes.notes}
+                          </p>
+                        </div>
+                      )}
+                      {!book.notes && (
+                        <p className="text-gray-500">Add notes...</p>
+                      )}
+                    </div>
                   </div>
+                  {openNotesWindow === true && 
+                      <NotesModal 
+                      openNotesWindow={openNotesWindow}
+                      setOpenNotesWindow={setOpenNotesWindow}
+                      book={book}
+                      user={user}
+                      fetchBooks={fetchBooks}
+                     />
+                  }
+
                   <div className="mr-4">
                     <button
                       onClick={() => setOpen(true)}

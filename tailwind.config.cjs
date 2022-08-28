@@ -9,7 +9,8 @@ module.exports = {
         'pastel-blue': '#6E85B7',
       },
       spacing:{
-        160: '40rem'
+        160: '40rem',
+        130: '32.5rem'
       }
     },
   },
