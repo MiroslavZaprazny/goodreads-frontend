@@ -1,35 +1,28 @@
-import React from 'react';
-import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import Search from './Search';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from "react";
+import { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
+import Search from "./Search";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = (props) => {
   const { user, setUser } = props;
   const [settingMenuIsVisible, setSettingMenuIsVisible] = useState(false);
 
   const logout = async () => {
-    await fetch('http://127.0.0.1:8000/api/logout', {
-      method: 'POST',
-      credentials: 'include',
+    await fetch("http://127.0.0.1:8000/api/logout", {
+      method: "POST",
+      credentials: "include",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
-    localStorage.removeItem('is_logged_in');
-    setUser('');
+    localStorage.removeItem("is_logged_in");
+    setUser("");
   };
   let menu;
-  if (localStorage.getItem('is_logged_in')) {
+  if (localStorage.getItem("is_logged_in")) {
     menu = (
       <>
-        <Link
-          to="/"
-          className="hover:text-navy transition ease-in-out duration-150"
-          onClick={logout}
-        >
-          Logout
-        </Link>
         {user.avatar && (
           <div className="ml-6">
             <button
@@ -52,11 +45,11 @@ const Navbar = (props) => {
                     initial={{ opacity: 0, scale: 0.75 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0 }}
-                    className="absolute -bottom-20 -left-8 border bg-gray-100 rounded-xl w-28 px-3 py-2 cursor-default space-y-4"
+                    className="absolute -bottom-28 -left-8 border bg-gray-100 rounded-xl w-28 px-3 py-2 cursor-default space-y-2"
                   >
                     <Link
-                      to={'profile/settings/' + user.email}
-                      className="flex items-center justify-center text-sm font-medium space-x-2 border-b pb-1"
+                      to={"profile/settings/" + user.email}
+                      className="flex items-center justify-center text-sm font-medium space-x-2 border-b border-gray-300 pb-1"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -82,9 +75,9 @@ const Navbar = (props) => {
                       </div>
                     </Link>
                     <Link
-                      to={'profile/' + user.email}
+                      to={"profile/" + user.email}
                       state={{ user: user }}
-                      className="flex items-center justify-center text-sm font-medium space-x-2"
+                      className="flex items-center justify-center text-sm font-medium border-b pb-1 border-gray-300 space-x-2"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -103,6 +96,27 @@ const Navbar = (props) => {
                       <div className="text-gray-600 hover:text-gray-900 transition ease-in duration-150">
                         Profile
                       </div>
+                    </Link>
+
+                    <Link
+                      to="/"
+                      className="flex items-center justify-center hover:text-gray-900 text-gray-600 text-sm font-medium space-x-2 transition ease-in-out duration-150"
+                      onClick={logout}
+                    >
+                      <svg
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        class="w-4 h-4"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+                        />
+                      </svg>
+                      <div>Logout</div>
                     </Link>
                   </motion.div>
                 )}
@@ -123,7 +137,7 @@ const Navbar = (props) => {
     menu = (
       <Link
         to="/register"
-        className="hover:text-navy transition ease-in-out duration-150"
+        className="hover:text-gray-500 text-gray-800 transition ease-in-out duration-150"
       >
         Sign up
       </Link>
@@ -145,8 +159,8 @@ const Navbar = (props) => {
           </NavLink>
         </div>
         <div className="nav-links mr-28 flex items-center">
-          <div className="mr-28">
-            <Search width="w-64"/>
+          <div className="mr-6">
+            <Search width="w-64" />
           </div>
           {menu}
         </div>

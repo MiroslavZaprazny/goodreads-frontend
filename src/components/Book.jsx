@@ -217,11 +217,9 @@ const Book = (props) => {
                 </span>
               </p>
               <div className="rating flex space-x-2 text-sm mt-1 ml-2 text-gray-500">
-                <p>5/10</p>
+                <p>{data.avgRating} / 10</p>
                 <p>{String.fromCharCode(183)}</p>
-                <p>500 ratings</p>
-                <p>{String.fromCharCode(183)}</p>
-                <p>20 reviews</p>
+                <p>{data.reviewCount} reviews</p>
               </div>
               <p className="text-sm text-gray-600 leading-6 mt-2 line-clamp-5 lg:line-clamp-none">
                 {data.description}
